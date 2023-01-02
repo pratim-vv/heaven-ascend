@@ -24,7 +24,7 @@ public class DemonMob : MonoBehaviour
         {
             Flip();
         }
-        if (rb.velocity.y == 0) { 
+        if (rb.velocity.y == 0 && rb.velocity.x == 0) { 
             float dist = GameObject.FindWithTag("Player").transform.position.x - trans.position.x;
             int sign = dist > 0f ? 1 : -1;
             float vertical = (dist <= .05f && dist >= -.05f) ? Random.Range(2f, 7f) : 0f;
@@ -35,7 +35,8 @@ public class DemonMob : MonoBehaviour
             timer = 0;
             Transform playerTranform = GameObject.FindWithTag("Player").transform;
             Vector3 pos = playerTranform.position;
-            rb.velocity = new Vector2(2.3f * (pos.x - trans.position.x), 5.2f * (pos.y - trans.position.y)) - new Vector2(Random.Range(-.02f, .02f), Random.Range(.1f, 1f));
+            float xvel = pos.x - trans.position.x > 3.5f || trans.position.x - pos.x > 6 ? (pos.x - trans.position.x > 1 ? 3.5f : -3.5f) : pos.x - trans.position.x;
+            rb.velocity = new Vector2(2.3f * xvel, 5.2f * (pos.y - trans.position.y)) - new Vector2(Random.Range(-.02f, .02f), -1 * Random.Range(.1f, 1f));
             Debug.Log("movement");
 
         }

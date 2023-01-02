@@ -9,6 +9,7 @@ public class AngelMovement : MonoBehaviour
     private float jumpingPower = 14f;
     private bool isFacingLeft = true;
 
+    [SerializeField] private AudioSource jumpsound;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -33,11 +34,12 @@ public class AngelMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
             Debug.Log("jump jump jump to it");
             Debug.Log(rb.position.x);
-        }
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+            jumpsound.Play();
+        } else if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             Debug.Log("high jump");
+            jumpsound.Play();
         }
         if (rb.position.x < -12.5)
         {
