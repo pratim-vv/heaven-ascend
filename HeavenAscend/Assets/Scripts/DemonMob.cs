@@ -8,6 +8,7 @@ public class DemonMob : MonoBehaviour
     public float movementInterval = 2.2f;
     private float timer = 0f;
     private bool isFacingLeft = true;
+    [SerializeField] private AudioSource jump;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform trans;
 
@@ -29,6 +30,10 @@ public class DemonMob : MonoBehaviour
             int sign = dist > 0f ? 1 : -1;
             float vertical = (dist <= .05f && dist >= -.05f) ? Random.Range(2f, 7f) : 0f;
             rb.velocity = new Vector2(sign * Random.Range(2f, 6f), vertical);
+            if (vertical > 1f)
+            {
+                jump.Play();
+            }
         }
         if (timer + Random.Range(0.0f, 0.5f) >= 2.2f)
         {
@@ -36,9 +41,12 @@ public class DemonMob : MonoBehaviour
             Transform playerTranform = GameObject.FindWithTag("Player").transform;
             Vector3 pos = playerTranform.position;
             float xvel = pos.x - trans.position.x > 3.5f || trans.position.x - pos.x > 6 ? (pos.x - trans.position.x > 1 ? 3.5f : -3.5f) : pos.x - trans.position.x;
-            rb.velocity = new Vector2(2.3f * xvel, 5.2f * (pos.y - trans.position.y)) - new Vector2(Random.Range(-.02f, .02f), -1 * Random.Range(.1f, 1f));
+            float vertical = 5.2f * (pos.y - trans.position.y) + Random.Range(.1f, 1f);
+            rb.velocity = new Vector2(2.3f * xvel, vertical) - new Vector2(Random.Range(-.02f, .02f), 0f);
             Debug.Log("movement");
-
+            if (vertical >= 1f) {
+                jump.Play();
+            }
         }
         else
         {
